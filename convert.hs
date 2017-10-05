@@ -1,13 +1,10 @@
--- 32 = 1+8+23
--- 64 = 1+11+52
-
 doubleToBinary value = if  value > 0
                           then  [0] : getX  (abs value) 0
                           else  [1] : getX  (abs value) 0
 
 getX value count
-      | value == 1 = return  $ decToBinary (127+count) ++ (take 24 $fracToBinary (value-1))
-      | value > 1 = getX (value/2) (count+1)
+      | value > 1 && value <2 = return  $ decToBinary (127+count) ++ (take 24 $fracToBinary (value-1))
+      | value > 1 = getX (value/2) (count +1 )
       | otherwise = getX (value*2) (count-1)
 
 
