@@ -1,28 +1,34 @@
+-- 32 = 1+8+23
+-- 64 = 1+11+52
+
+doubleToBinary value = if  value > 0
+                          then  [0] : getX  (abs value) 0
+                          else  [1] : getX  (abs value) 0
+
+getX value count
+      | value == 1 = return  $ decToBinary (127+count) ++ (take 24 $fracToBinary (value-1))
+      | value > 1 = getX (value/2) (count+1)
+      | otherwise = getX (value*2) (count-1)
+
+
+decToBinary :: Int -> [Int]
+decToBinary 0 =[0]
+decToBinary 1 =[1]
+decToBinary num
+ | mod num 2 ==0 = decToBinary (div num 2) ++ [0]
+ | mod num 2 ==1 = decToBinary (div num 2) ++ [1]
+
+
+fracToBinary ::(Eq a,Ord a,Num a)=> a -> [Int]
+fracToBinary 0=[0]
+fracToBinary num
+ | num*2 >= 1 = 1:fracToBinary (num*2 -1)
+ | num*2 < 1 = 0:fracToBinary (num*2)
 
 
 
 
 
-
-
-
-
-
-
-
-dectobinbefore :: Int -> [Int]
-dectobinbefore 0 =[0]
-dectobinbefore 1 =[1]
-dectobinbefore num
- | mod num 2 ==0 = dectobinbefore (div num 2) ++ [0]
- | mod num 2 ==1 = dectobinbefore (div num 2) ++ [1]
-
-
-dectobinafter ::(Eq a,Ord a,Num a)=> a -> [Int]
-dectobinafter 0=[0]
-dectobinafter num
- | num*2 >= 1 = 1:dectobinafter (num*2 -1)
- | num*2 < 1 = 0:dectobinafter (num*2)
 
 
 bintodecbefore :: [Int] -> Int
