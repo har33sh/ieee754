@@ -45,7 +45,6 @@ fractional_to_binary num
 ---------------------    Convert ieee754 to human readable format   ----------------------
 
 convert_from_ieee (sign,ex,frac) =((-1)^sign) * (2**(binary_to_dec ex-(2^exponent_bits -1)))  *(1+ binary_to_frac frac)
---convert binary to integer
 
 --convert binary to decimal
 binary_to_dec :: ( Num a) => [Int] -> a
@@ -54,3 +53,5 @@ binary_to_dec x = sum $map snd $ filter ((==1).fst) $zip (reverse x) $map (2^) [
 --convert binary to fractional
 binary_to_frac :: (Fractional a) => [Int] -> a
 binary_to_frac frac = sum $map snd$ filter ((==1).fst)  $zip frac $ map (1/) $map (2^) [1..]
+
+----------------------------------------------------------------------------------------------------
