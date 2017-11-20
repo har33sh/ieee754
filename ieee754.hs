@@ -6,7 +6,7 @@ fractional_bits = 23
 ----------------------      Convert number to ieee754 format       ----------------------
 convert_to_ieee number = (sign,ex,frac)
                         where  sign = if number < 0 then 1 else 0
-                               frac = ieee754_fractional f
+                               frac = ieee754_fractional f 
                                ex = ieee754_exponent (2^exponent_bits + e -1)
                                f = head x
                                x = until_one (abs number)
@@ -16,7 +16,7 @@ convert_to_ieee number = (sign,ex,frac)
 until_one number = if number > 1 then get_one number else get_one' number
 
 get_one number
-  | number > 1 && number<2  = [number-1]
+  | number<2  = [number-1]
   |otherwise = get_one (number/2) ++ [number]
 
 get_one' number
@@ -29,7 +29,7 @@ ieee754_exponent x =take (exponent_bits - length binary_representation) (repeat 
                     where binary_representation= int_to_binary x
 
 ieee754_fractional::(Eq a,Ord a,Num a)=> a -> [Int]
-ieee754_fractional num = take fractional_bits $ fractional_to_binary num
+ieee754_fractional num = take fractional_bits $ fractional_to_binary num ++ (repeat 0)
 
 
 --convert integer to binary
@@ -152,11 +152,6 @@ icompare (x:xs) (y:ys)
  | x >y = 1
  | y>x  = -1
  | x==y  = icompare xs ys
-
-
-
-
-
 
 
 addition (a,b,c) (p,q,r)
