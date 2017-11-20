@@ -3,11 +3,11 @@
 
 exponent_bits = 7
 fractional_bits = 23
-----------------------      Convert number to ieee754 format       ----------------------
+----------------------      Convert number to ieee754 format       ---------------------- 
 convert_to_ieee number = (sign,ex,frac)
                         where  sign = if number < 0 then 1 else 0
                                frac = ieee754_fractional f 
-                               ex = ieee754_exponent (2^exponent_bits + e -1)
+                               ex =  ieee754_exponent (2^exponent_bits + e -1)
                                f = head x
                                x = until_one (abs number)
                                e= if (abs number) > 1 then length x-1 else (-1) * length x +1
@@ -25,7 +25,7 @@ get_one' number
 
 
 ieee754_exponent:: Int -> [Int]
-ieee754_exponent x =take (exponent_bits - length binary_representation) (repeat 0) ++  binary_representation
+ieee754_exponent x =take (8-length binary_representation) (repeat 0) ++ binary_representation 
                     where binary_representation= int_to_binary x
 
 ieee754_fractional::(Eq a,Ord a,Num a)=> a -> [Int]
