@@ -4,7 +4,9 @@
 exponent_bits = 7
 fractional_bits = 23
 ----------------------      Convert number to ieee754 format       ---------------------- 
-convert_to_ieee number = (sign,ex,frac)
+convert_to_ieee number
+        | number ==0 = zero
+        | otherwise = (sign,ex,frac)
                         where  sign = if number < 0 then 1 else 0
                                frac = ieee754_fractional f 
                                ex =  ieee754_exponent (2^exponent_bits + e -1)
