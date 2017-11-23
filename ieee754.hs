@@ -103,8 +103,12 @@ iadd [] [] carry
  | otherwise =[1]
 
 
+iadd [] b carry = b
+iadd a [] carry = a
+
 iadd (x:xs) (y:ys) carry = [fst z] ++ iadd xs  ys (snd z)
  where z=fulladder x y carry
+ 
 
 --subtractors
 -- diff borrow
@@ -138,16 +142,18 @@ multiply (a,b,c) (p,q,r)
  | iszero (p,q,r) =zero
  | isinf (a,b,c) = inf
  | isinf (p,q,r) =inf
- | otherwise = (ixor a p,normalizeExp b q z  ,normalizeMantisa z)
-   where z=imul (1:c) (1:r)
+ | otherwise = (ixor a p,lastN 8 (normalizeExp (0:b) (0:q) z)  ,normalizeMantisa z)
+  where z=imul (1:c) (1:r)
 
 normalizeMantisa (z:zs)
  | z==0 = take 23 (drop 1 zs)
  | otherwise = take 23 (drop 1 (z:zs))
 
 normalizeExp p q (z:zs)
- | z==0 = addnum (subnum p [0,1,1,1,1,1,1,1]) q
- | otherwise =addnum (addnum (subnum p [0,1,1,1,1,1,1,1]) q) [0,0,0,0,0,0,0,1]
+ | z==0 = subnum (addnum p q)  [0,0,1,1,1,1,1,1,1]
+ | otherwise =addnum (addnum (subnum p [0,0,1,1,1,1,1,1,1]) q) [0,0,0,0,0,0,0,0,1]
+
+lastN n xs = drop (length xs - n) xs
 
 icompare [] [] = 0
 icompare (x:xs) (y:ys)
@@ -203,3 +209,4 @@ substract (a,b,c) (p,q,r)
  | isinf (a,b,c) = inf
  | isinf (p,q,r) =inf
  | otherwise = iaddition (a,b,c) (inot p,q,r)
+
